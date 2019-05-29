@@ -29,6 +29,7 @@ pipeline {
                         stage('parallel-3-2') {
                             steps {
                                 sh 'sleep 4; echo "parallel-3-2: `date`"'
+                                sh 'echo my edit jenkinsfile'
                             }
                         }
                     }
