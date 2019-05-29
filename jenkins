@@ -1,11 +1,38 @@
 pipeline {
     agent any
-
     stages {
-        stage('Build') {
+        stage('stage-1') {
             steps {
-                sh 'make' 
-                archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true 
+                sh 'sleep 14; echo "stage-1: `date`"'
+            }
+        }
+        stage('stage-2') {
+            failFast true
+            parallel {
+                stage('parallel-1') {
+                    steps {
+                        sh 'sleep 12; echo "parallel-1: `date`"'
+                    }
+                }
+                stage('parallel-2') {
+                    steps {
+                        sh 'sleep 8; echo "parallel-2: `date`"'
+                    }
+                }
+                stage('parallel-3') {
+                    stages {
+                        stage('parallel-3-1') {
+                            steps {
+                                sh 'sleep 6; echo "parallel-3-1: `date`"'
+                            }
+                        }
+                        stage('parallel-3-2') {
+                            steps {
+                                sh 'sleep 4; echo "parallel-3-2: `date`"'
+                            }
+                        }
+                    }
+                }
             }
         }
     }
